@@ -1,38 +1,35 @@
--- Define the visualization module
 local Visualization = {}
 
--- Define the camera and GUI objects
 local camera = game.Workspace.CurrentCamera
 local gui = Instance.new("ScreenGui")
 gui.Parent = game.CoreGui
 
-function Visualization.visualizeVector3(vector3)
+function Visualization.visualizeVector3(vector3, parent)
   local part = Instance.new("Part")
   part.Size = Vector3.new(0.2, 0.2, 0.2)
   part.Position = vector3
-  part.Parent = game.Workspace
+  part.Parent = parent
   part.Anchored = true
   part.CanCollide = false
   part.Material = Enum.Material.Neon
   part.BrickColor = BrickColor.new("Bright red")
-  
+
   local cameraTarget = CFrame.new(vector3)
   camera.CameraType = Enum.CameraType.Scriptable
   camera.CFrame = cameraTarget
   camera.Focus = cameraTarget
 end
 
-function Visualization.visualizeCFrame(cframe)
+function Visualization.visualizeCFrame(cframe, parent)
   local part = Instance.new("Part")
   part.Size = Vector3.new(1, 1, 1)
   part.CFrame = cframe
-  part.Parent = game.Workspace
+  part.Parent = parent
   part.Anchored = true
   part.CanCollide = false
   part.Material = Enum.Material.Neon
   part.BrickColor = BrickColor.new("Bright blue")
-  
-  -- Smooth camera movement to follow the object
+
   local cameraTarget = cframe
   camera.CameraType = Enum.CameraType.Scriptable
   camera.CFrame = cameraTarget * CFrame.new(0, 0, 10)
@@ -48,17 +45,16 @@ function Visualization.createButton(name, object, visualizeFunction)
   button.Text = name
   button.FontSize = Enum.FontSize.Size18
   button.TextColor3 = Color3.fromRGB(0, 0, 0)
-  
-  -- Define the function to be executed when the button is clicked
+
   button.MouseButton1Click:Connect(function()
-    visualizeFunction(object)
+    visualizeFunction(object, game.Workspace)
   end)
 end
 
-function Visualization.visualizePlayerPosition()
+function Visualization.visualizePlayerPosition(parent)
   local character = game.Players.LocalPlayer.Character
   local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-  Visualization.visualizeVector3(humanoidRootPart.Position)
+  Visualization.visualizeVector3(humanoidRootPart.Position, parent)
 end
 
 return Visualization
