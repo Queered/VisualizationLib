@@ -1,8 +1,10 @@
+-- Define the visualization module
 local Visualization = {}
 
+-- Define the camera and GUI objects
 local camera = game.Workspace.CurrentCamera
 local gui = Instance.new("ScreenGui")
-gui.Parent = game.Players.LocalPlayer.PlayerGui
+gui.Parent = game.CoreGui
 
 function Visualization.visualizeVector3(vector3)
   local part = Instance.new("Part")
@@ -30,6 +32,7 @@ function Visualization.visualizeCFrame(cframe)
   part.Material = Enum.Material.Neon
   part.BrickColor = BrickColor.new("Bright blue")
   
+  -- Smooth camera movement to follow the object
   local cameraTarget = cframe
   camera.CameraType = Enum.CameraType.Scriptable
   camera.CFrame = cameraTarget * CFrame.new(0, 0, 10)
